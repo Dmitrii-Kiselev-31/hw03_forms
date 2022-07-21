@@ -4,6 +4,10 @@ from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61ff239f0880cb3a1a768b077de1f85a66799d80
 from .forms import PostForm
 from .models import Post
 from .models import Group, User
