@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
+
 from .forms import PostForm
 from .models import Post
 from .models import Group, User
