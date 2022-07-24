@@ -1,5 +1,5 @@
-#Если я избавляюсь от Update, то у меня все рушится
-#Как я только не пытался, не получается, не знаю как
+# Если я избавляюсь от Update, то у меня все рушится
+# Как я только не пытался, не получается, не знаю как
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import redirect
