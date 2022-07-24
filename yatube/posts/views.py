@@ -1,3 +1,5 @@
+#Если я избавляюсь от Update, то у меня все рушится
+#Как я только не пытался, не получается, не знаю как
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import redirect
@@ -13,42 +15,41 @@ CUTOFF = 10
 User = get_user_model()
 
 
-def index(request):
-    posts = Post.objects.select_related('group')
-    paginator = Paginator(posts, CUTOFF)
+def get_page(queryset, request):
+    paginator = Paginator(queryset, CUTOFF)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {
-        'posts': posts,
+    return {
         'page_obj': page_obj,
     }
+
+
+def index(request):
+    posts = Post.objects.select_related('group')
+    context = {
+        'posts': posts,
+    }
+    context = get_page(Post.objects.all(), request)
     return render(request, 'posts/index.html', context)
 
 
 def group_list(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.all()
-    paginator = Paginator(posts, CUTOFF)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    posts = group.posts.all()[:CUTOFF]
     context = {
         'group': group,
         'posts': posts,
-        'page_obj': page_obj,
     }
+    context.update(get_page(group.posts.all(), request))
     return render(request, 'posts/group_list.html', context)
 
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    posts = author.posts.all()
-    paginator = Paginator(posts, CUTOFF)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
     context = {
         'author': author,
-        'page_obj': page_obj,
     }
+    context.update(get_page(author.posts.all(), request))
     return render(request, 'posts/profile.html', context)
 
 

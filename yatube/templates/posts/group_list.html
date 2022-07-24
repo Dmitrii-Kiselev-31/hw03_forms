@@ -5,15 +5,7 @@
   <h1>{{ group.title }}</h1>
   <p>{{ group.description }}</p>
   {% for post in posts %}
-    <ul>
-      <li>
-        Автор: {{ post.author.get_full_name }}
-      </li>
-      <li>
-        Дата публикации: {{ post.pub_date|date:"d E Y" }}
-      </li>
-    </ul>
-    <p>{{ post.text|linebreaks }}</p>
+    {% include 'includes/author_date.html' %}
     {% if not forloop.last %}<hr>{% endif %}
   {% endfor %}
   {% include 'includes/paginator.html' %}
