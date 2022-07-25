@@ -1,5 +1,3 @@
-# Если я избавляюсь от Update, то у меня все рушится
-# Как я только не пытался, не получается, не знаю как
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.shortcuts import redirect
@@ -25,27 +23,31 @@ def get_page(queryset, request):
 
 
 def index(request):
-    posts = Post.objects.select_related('group')
+    posts = Post.objects.select_related('group', 'author')
     context = {
         'posts': posts,
     }
     context = get_page(Post.objects.all(), request)
+# Тут тоже не пойму как сделать
     return render(request, 'posts/index.html', context)
 
 
 def group_list(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = group.posts.all()[:CUTOFF]
+    posts = Post.objects.select_related('author')[:CUTOFF]
     context = {
         'group': group,
         'posts': posts,
     }
     context.update(get_page(group.posts.all(), request))
     return render(request, 'posts/group_list.html', context)
+# Не получается у меня без Update, по вашем предложению просидел
+# Так и не разобрался не выходит, все ломается и страница пустая
 
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
+    posts = Post.objects.select_related('author').all()
     context = {
         'author': author,
     }
@@ -55,10 +57,8 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    posts_count = Post.objects.filter(author=post.author).count()
     context = {
         'post': post,
-        'posts_count': posts_count,
     }
     return render(request, 'posts/post_detail.html', context)
 

@@ -18,8 +18,7 @@
           >
           {% csrf_token %}
 
-          {% for field in form %}<!--Здравствуйте Алексей, если делаю в инклюд строку с 21 по 44 и использую в create_post.html в выводе полей то {{ field|addclass:'form-control' }} не грузит шаблон ошибка в фильтрах Invalid filter: 'addclass', так как завязано на views.py in post_create -->
-
+          {% for field in form %}
             <div class="form-group row my-3"
               {% if field.field.required %} 
                 aria-required="true"

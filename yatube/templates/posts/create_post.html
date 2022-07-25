@@ -13,7 +13,7 @@
                 {% include 'includes/form_error.html' %}        
                 <form method="post" action="{% url 'posts:post_create' %}">
                   {% csrf_token %}
-                  <input type="hidden" value="">            
+                  {% include 'includes/form_field.html' %}
                   <div class="form-group row my-3 p-3">
                     <label for="id_text">
                       Текст поста                  
