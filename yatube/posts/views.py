@@ -47,7 +47,6 @@ def group_list(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    posts = Post.objects.select_related('author').all()
     context = {
         'author': author,
     }
