@@ -27,8 +27,7 @@ def index(request):
     context = {
         'posts': posts,
     }
-    context = get_page(Post.objects.all(), request)
-# Тут тоже не пойму как сделать
+    context = get_page(posts, request)
     return render(request, 'posts/index.html', context)
 
 
@@ -41,8 +40,8 @@ def group_list(request, slug):
     }
     context.update(get_page(group.posts.all(), request))
     return render(request, 'posts/group_list.html', context)
-# Не получается у меня без Update, по вашем предложению просидел
-# Так и не разобрался не выходит, все ломается и страница пустая
+# Не работает context = get_page(posts, request)
+# не выходит от update избавиться я не понимаю как
 
 
 def profile(request, username):
@@ -52,6 +51,10 @@ def profile(request, username):
     }
     context.update(get_page(author.posts.all(), request))
     return render(request, 'posts/profile.html', context)
+# тут я пытаюсь сделать posts = Post.objects.filter(author=author)
+# пытаюсь еще так posts = Post.objects.select_related('author').all()
+# И контекст делаю context = get_page(posts, request)
+# нигде pytest не проходит хотя все грузится
 
 
 def post_detail(request, post_id):

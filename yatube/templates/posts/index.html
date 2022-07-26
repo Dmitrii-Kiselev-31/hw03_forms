@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{ title }} {% endblock %}
-  {% block content %}
+{% block content %}
   <h1>Последние обновления на сайте</h1>
   {% for post in page_obj %}
     {% include 'includes/author_date.html' %}
@@ -11,5 +11,4 @@
     {% if not forloop.last %}<hr>{% endif %}
   {% endfor %}
   {% include 'includes/paginator.html' %}
-  {% endblock %}       
-  {% include 'includes/footer.html' %}    
+{% endblock %} 
