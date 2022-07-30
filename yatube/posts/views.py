@@ -17,44 +17,40 @@ def get_page(queryset, request):
     paginator = Paginator(queryset, CUTOFF)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return {
-        'page_obj': page_obj,
-    }
+    return page_obj
 
 
 def index(request):
     posts = Post.objects.select_related('group', 'author')
+    page_obj = get_page(posts, request)
     context = {
-        'posts': posts,
+        'page_obj': page_obj,
     }
-    context = get_page(posts, request)
     return render(request, 'posts/index.html', context)
 
 
 def group_list(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = Post.objects.select_related('author')[:CUTOFF]
+    posts = group.posts.select_related('author')
+    page_obj = get_page(posts, request)
     context = {
         'group': group,
         'posts': posts,
+        'page_obj': page_obj,
     }
-    context.update(get_page(group.posts.all(), request))
     return render(request, 'posts/group_list.html', context)
-# Не работает context = get_page(posts, request)
-# не выходит от update избавиться я не понимаю как
 
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
+    posts = author.posts.select_related('group')
+    page_obj = get_page(posts, request)
     context = {
         'author': author,
+        'page_obj': page_obj,
+        'posts': posts,
     }
-    context.update(get_page(author.posts.all(), request))
     return render(request, 'posts/profile.html', context)
-# тут я пытаюсь сделать posts = Post.objects.filter(author=author)
-# пытаюсь еще так posts = Post.objects.select_related('author').all()
-# И контекст делаю context = get_page(posts, request)
-# нигде pytest не проходит хотя все грузится
 
 
 def post_detail(request, post_id):
