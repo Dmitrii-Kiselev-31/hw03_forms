@@ -35,7 +35,6 @@ def group_list(request, slug):
     page_obj = get_page(posts, request)
     context = {
         'group': group,
-        'posts': posts,
         'page_obj': page_obj,
     }
     return render(request, 'posts/group_list.html', context)
@@ -48,7 +47,6 @@ def profile(request, username):
     context = {
         'author': author,
         'page_obj': page_obj,
-        'posts': posts,
     }
     return render(request, 'posts/profile.html', context)
 
